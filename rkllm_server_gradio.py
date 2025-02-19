@@ -1,5 +1,6 @@
 import sys
 import resource
+import subprocess
 import gradio as gr
 from ctypes_bindings import *
 from model_class import *
@@ -15,6 +16,15 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (102400, 102400))
 history = []
 
 if __name__ == "__main__":
+
+
+    # Setting a fixed frequency
+    command = "sudo bash ./lib/fix_freq_rk3588.sh"
+    subprocess.run(command, shell=True)
+
+    # Setting a limit on the number of file descriptors
+    resource.setrlimit(resource.RLIMIT_NOFILE, (102400, 102400))
+
     # Helper function to define initializing model before class is declared
     # Without this, you would need to initialize the class before you select the model
     def initialize_model(model):
